@@ -60,11 +60,16 @@ class UserClientViewset(viewsets.ModelViewSet):
         user = request.user
 
         self.serializer_class = UserClientUpdateSerializer
-        
-        #if not request.data.get('fk_user'):
-        #    request.data['fk_user'] = {}
-        
-        instance = get_object_or_404(UserClient, fk_user=user.pk)
+        print(user)
+        try:
+            instance = UserClient.objects.get(fk_user=user.pk)
+        except Exception as e:
+            print(e)
+            return Response(
+                {'detail':'Este usuario no se encuentra registrado'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         serializer = self.serializer_class(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)

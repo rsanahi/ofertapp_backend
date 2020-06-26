@@ -8,6 +8,7 @@ from rest_framework import (
 from rest_framework.response import Response
 from rest_framework.decorators import action, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 
 from utils.permissions import is_in_group
@@ -32,8 +33,42 @@ class BusinessViewset(viewsets.ModelViewSet):
     """
     queryset = UserBusiness.objects.all().filter(soft_delete=False)
     serializer_class = BusinessSerializer
-    filter_fields = ('id_resto','nombre_local','fk_user','fk_user__username')
+    filter_fields = ('id_resto','nombre_local','fk_user')
     permission_groups = {
         'list': ['Admin'],
         'create': ['_Public'],
+        'actualizar': ['Business']
     }
+
+    def get_serializer_class(self):
+        if self.request.method in ['PUT']:
+            return BusinessUpdateSerializer
+        return self.serializer_class
+
+    @action(methods=['put'], detail=False,
+            url_path='actualizar', url_name='actualizar')
+    def actualizar(self, request, *args, **kwargs):
+        """
+        Funcion para actualizar datos del cliente
+
+        @param request objeto de la peticion
+        @return Response objeto del cliente actualizado
+        """
+        partial = kwargs.pop('partial', False)
+        user = request.user
+        try:
+            instance = UserBusiness.objects.get(fk_user=user.pk)
+        except Exception as e:
+            print(e)
+            return Response(
+                {'detail':'Este usuario no se encuentra registrado'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        serializer = self.get_serializer_class()
+        serializer = serializer(instance, data=request.data, partial=partial)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            print(e)
+        self.perform_update(serializer)
+        return Response(serializer.data)

@@ -176,4 +176,15 @@ REST_FRAMEWORK = {
     ),
 }
 
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': 'recuperar-contrasena/{uid}/{token}', # Coloque la ruta del frontend y tome el uid y el token para enviarlos como parametros
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
+    'SERIALIZERS': {
+        'token': 'users.serializers.UserTokenSerializer',
+        'password_reset': 'users.serializers.SerializerSendMailResetPassword',
+    },
+}
+
 FIXTURE = os.path.join(BASE_DIR, 'fixtures')

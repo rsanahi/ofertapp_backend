@@ -170,3 +170,14 @@ class UserClientUpdateSerializer(serializers.ModelSerializer):
 
         return instance
 
+class UserTokenSerializer(serializers.ModelSerializer):
+    """
+
+    """
+    auth_token = serializers.CharField(source="key")
+    user = UserGroupSerializer(many=False) 
+
+    class Meta:
+        model = Token
+        fields = ("auth_token", 'user')
+        read_only_fields = ('user',)

@@ -32,3 +32,45 @@ class BusinessSerializer(serializers.ModelSerializer):
       user.groups.add(2)
       business_info = UserBusiness.objects.create(**validated_data, fk_user=user)
     return business_info
+
+
+class BusinessUpdateSerializer(serializers.ModelSerializer):
+  """
+    Clase para actualizar la data de la empresa
+  """
+
+  fk_user = UserUpdateSerializer(many=False)
+
+  class Meta:
+    """
+    """
+    model = UserBusiness
+    fields = '__all__'
+
+  def update(self, instance, validated_data):
+    """!
+    
+    """
+    print("validata",validated_data)
+    if validated_data.get("fk_user"):
+        user_seri = validated_data.pop("fk_user")
+        print(user_seri)
+    else:
+        user_seri = {}
+    instance.telefono = validated_data.get('telefono', instance.telefono)
+    instance.nombre_local = validated_data.get('nombre_local', instance.nombre_local)
+    instance.direccion = validated_data.get('direccion', instance.direccion)
+
+    email = user_seri.get('email') if user_seri.get('email', None) is not None else instance.fk_user.email        
+    first_name = user_seri.get('first_name') if user_seri.get('first_name', None) is not None else instance.fk_user.first_name
+    last_name = user_seri.get('last_name') if user_seri.get('last_name', None) is not None else instance.fk_user.last_name
+
+    with transaction.atomic():
+        user = instance.fk_user
+        user.email = email
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+        instance.save()
+
+    return instance
