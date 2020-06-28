@@ -150,8 +150,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'sources')
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
 # Config router statics files
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'sources'),
