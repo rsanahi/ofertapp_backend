@@ -44,6 +44,16 @@ class BusinessViewset(viewsets.ModelViewSet):
         if self.request.method in ['PUT']:
             return BusinessUpdateSerializer
         return self.serializer_class
+    
+    def create(self, request):
+        business = request.data
+        business['fk_user']['username'] = business['fk_user']['email']
+        serializer = self.serializer_class(data=business)
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return Response(serializer.data)
 
     @action(methods=['put'], detail=False,
             url_path='actualizar', url_name='actualizar')

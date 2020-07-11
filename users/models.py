@@ -16,7 +16,7 @@ class UserClient(SoftDelete):
 
     fk_user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    genero = models.PositiveIntegerField(choices=GENERO_CHOICES)
+    genero = models.PositiveIntegerField(choices=GENERO_CHOICES, default=4)
 
     telefono = models.CharField(max_length=20)
 

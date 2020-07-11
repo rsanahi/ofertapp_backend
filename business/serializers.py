@@ -20,7 +20,7 @@ class BusinessSerializer(serializers.ModelSerializer):
     Clase de metadata
     """
     model = UserBusiness
-    fields = ('pk', 'nombre_local', 'telefono', 'direccion', 'fk_user')
+    fields = ('pk', 'nombre_local', 'telefono', 'fk_user')
 
   def create(self, validated_data):
     """!

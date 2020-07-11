@@ -39,13 +39,23 @@ class UserClientViewset(viewsets.ModelViewSet):
     """
     queryset = UserClient.objects.all()
     serializer_class = UserClientSerializer
-    filter_fields = ('id', 'genero', 'telefono')
+    filter_fields = ('id', 'telefono')
     permission_groups = {
         'list': ['Admin'],
         'create': ['_Public'],
         'actualizar': ['User'],
         'detalle': ['User'],
     }
+
+    def create(self, request):
+        client = request.data
+        client['fk_user']['username'] = client['fk_user']['email']
+        serializer = self.serializer_class(data=client)
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return Response(serializer.data)
 
     @action(methods=['put'], detail=False,
             url_path='actualizar', url_name='actualizar')
