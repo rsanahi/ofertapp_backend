@@ -110,7 +110,8 @@ class UserClientSerializer(serializers.ModelSerializer):
         Clase de metadata
         """
         model = UserClient
-        fields = ['telefono', 'genero', 'fk_user']
+        fields = ['genero', 'fk_user', 'telefono']
+        read_only_fields = ('telefono',)
 
 
     def create(self, validated_data):

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from rest_framework import (
     viewsets, exceptions, status
 )
@@ -39,7 +40,7 @@ class UserClientViewset(viewsets.ModelViewSet):
     """
     queryset = UserClient.objects.all()
     serializer_class = UserClientSerializer
-    filter_fields = ('id', 'telefono')
+    filter_fields = ('id')
     permission_groups = {
         'list': ['Admin'],
         'create': ['_Public'],
