@@ -37,7 +37,8 @@ class BusinessViewset(viewsets.ModelViewSet):
     permission_groups = {
         'list': ['Admin'],
         'create': ['_Public'],
-        'actualizar': ['Business']
+        'actualizar': ['Business'],
+        'detalle': ['Business']
     }
 
     def get_serializer_class(self):
@@ -81,4 +82,13 @@ class BusinessViewset(viewsets.ModelViewSet):
         except Exception as e:
             print(e)
         self.perform_update(serializer)
+        return Response(serializer.data)
+    
+    @action(methods=['get'], detail=False,
+        url_path='detalles', url_name='detalles')
+    def detalle(self, request, *args, **kwargs):
+        user = request.user
+        print(user)
+        instance = get_object_or_404(self.queryset, fk_user=user.pk)
+        serializer = self.serializer_class(instance)
         return Response(serializer.data)

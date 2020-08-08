@@ -12,3 +12,6 @@ TuOfertApp/__pycache__/routers.cpython-37.pyc
 business/__pycache__/models.cpython-37.pyc
 users/__pycache__/serializers.cpython-37.pyc
 pruebas Api/
+*.pyc
+users/__pycache__/views.cpython-37.pyc
+business/__pycache__/models.cpython-37.pyc

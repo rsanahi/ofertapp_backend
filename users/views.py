@@ -90,6 +90,7 @@ class UserClientViewset(viewsets.ModelViewSet):
             url_path='detalles', url_name='detalles')
     def detalle(self, request, *args, **kwargs):
         user = request.user
+        print(user)
         instance = get_object_or_404(self.queryset, fk_user=user.pk)
         serializer = self.serializer_class(instance)
         return Response(serializer.data)

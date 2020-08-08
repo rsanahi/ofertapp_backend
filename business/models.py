@@ -19,8 +19,6 @@ class UserBusiness(SoftDelete):
 
     telefono = models.CharField(max_length=20)
 
-    receive_noti = models.BooleanField(default=True, help_text='Permite recibir notificaciones')
-
     class Meta:
         """!
         Clase de metadata
@@ -36,3 +34,21 @@ class UserBusiness(SoftDelete):
         Método de serialización
         """
         return self.fk_user.username
+    
+class Ofertas(SoftDelete):
+    """
+    Clase para almacenar las ofertas del usuario empresa
+
+    @author Anahi Ruiz (rs.anahi at gmail.com)
+    @date 21-06-20
+    @version 1.0.0
+    """
+    fk_user = models.OneToOneField(UserBusiness, on_delete=models.CASCADE)
+
+    titulo = models.CharField(max_length=255, default="", null=False)
+
+    descripcion = models.TextField(max_length=255, default="")
+
+    precio_neto = models.FloatField(null=False, default=0.00)
+
+    porcentaje = models.IntegerField(null=False, default=0)

@@ -190,3 +190,17 @@ DJOSER = {
 
 FIXTURE = os.path.join(BASE_DIR, 'fixtures')
 django_heroku.settings(locals())
+
+# this disables Cross domain requests
+CORS_ORIGIN_ALLOW_ALL = False 
+
+# this is the list of allowed origins for cross domain ajax
+CORS_ORIGIN_WHITELIST = ( 
+    'http://localhost:8100',
+    'https://www.facebook.com',
+    'https://accounts.google.com',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
