@@ -33,12 +33,13 @@ class BusinessViewset(viewsets.ModelViewSet):
     """
     queryset = UserBusiness.objects.all().filter(soft_delete=False)
     serializer_class = BusinessSerializer
-    filter_fields = ('id_resto','nombre_local','fk_user')
+    filter_fields = ('nombre_local', 'fk_user', 'fk_user__username')
     permission_groups = {
         'list': ['Admin'],
         'create': ['_Public'],
         'actualizar': ['Business'],
-        'detalle': ['Business']
+        'detalle': ['Business'],
+        'categoria': ['Business', 'Admin', 'User']
     }
 
     def get_serializer_class(self):
@@ -80,7 +81,7 @@ class BusinessViewset(viewsets.ModelViewSet):
         try:
             serializer.is_valid(raise_exception=True)
         except Exception as e:
-            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         self.perform_update(serializer)
         return Response(serializer.data)
     
@@ -88,7 +89,14 @@ class BusinessViewset(viewsets.ModelViewSet):
         url_path='detalles', url_name='detalles')
     def detalle(self, request, *args, **kwargs):
         user = request.user
-        print(user)
         instance = get_object_or_404(self.queryset, fk_user=user.pk)
-        serializer = self.serializer_class(instance)
+        serializer = BusinessUpdateSerializer(instance)
         return Response(serializer.data)
+
+    @action(methods=['get'], detail=False,
+            url_path='categorias', url_name='categorias')
+    def categoria(self, request, *args, **kwargs):
+        categorias = BusinessCategories.objects.all()
+        serializer = BusinessCategoriesSerializer(categorias,many=True)
+        return Response({'categorias':serializer.data},
+                status=status.HTTP_200_OK)

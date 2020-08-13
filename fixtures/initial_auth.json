@@ -1,20 +1,20 @@
 [
-    {
-      "model": "auth.user", 
-      "pk": 1, 
-      "fields": {
-        "password": "pbkdf2_sha256$150000$iEKHf5fLcDb1$kNcEB33FfbEs8yp0h/B8H8plcwXvYk0k3iNzCmb3rp0=", 
-        "username": "admin", 
-        "first_name": "Administrador", 
-        "last_name": "Admin", 
-        "email": "admin@email.com", 
-        "is_staff": true, 
-        "is_active": true,
-        "is_superuser": true, 
-        "date_joined": "2019-08-19T06:00:00Z",
-        "last_login": "2019-08-19T18:00:00Z",
-        "groups": [1], 
-        "user_permissions": []
-      }
+  {
+    "model": "auth.user", 
+    "pk": 1, 
+    "fields": {
+      "password": "pbkdf2_sha256$150000$iEKHf5fLcDb1$kNcEB33FfbEs8yp0h/B8H8plcwXvYk0k3iNzCmb3rp0=", 
+      "username": "admin", 
+      "first_name": "Administrador", 
+      "last_name": "Admin", 
+      "email": "admin@email.com", 
+      "is_staff": true, 
+      "is_active": true,
+      "is_superuser": true, 
+      "date_joined": "2019-08-19T06:00:00Z",
+      "last_login": "2019-08-19T18:00:00Z",
+      "groups": [1], 
+      "user_permissions": []
     }
-  ]
+  }
+]

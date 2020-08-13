@@ -6,6 +6,16 @@ from rest_framework.validators import UniqueTogetherValidator
 from users.serializers import UserSerializer, UserUpdateSerializer
 from .models import *
 
+class BusinessCategoriesSerializer(serializers.ModelSerializer):
+  """
+    Clase para listar las categorias
+  """
+
+  class Meta:
+    """
+    """
+    model = BusinessCategories
+    fields = '__all__'
 
 class BusinessSerializer(serializers.ModelSerializer):
   """
@@ -41,11 +51,17 @@ class BusinessUpdateSerializer(serializers.ModelSerializer):
 
   fk_user = UserUpdateSerializer(many=False)
 
+  categoria = serializers.SlugRelatedField(
+        slug_field='categoria',
+        many=False,
+        queryset=BusinessCategories.objects.all()
+    )
+
   class Meta:
     """
     """
     model = UserBusiness
-    fields = '__all__'
+    exclude = ('created_at', 'updated_at')
 
   def update(self, instance, validated_data):
     """!
@@ -60,6 +76,7 @@ class BusinessUpdateSerializer(serializers.ModelSerializer):
     instance.telefono = validated_data.get('telefono', instance.telefono)
     instance.nombre_local = validated_data.get('nombre_local', instance.nombre_local)
     instance.direccion = validated_data.get('direccion', instance.direccion)
+    instance.categoria = validated_data.get('categoria', instance.categoria)
 
     email = user_seri.get('email') if user_seri.get('email', None) is not None else instance.fk_user.email        
     first_name = user_seri.get('first_name') if user_seri.get('first_name', None) is not None else instance.fk_user.first_name

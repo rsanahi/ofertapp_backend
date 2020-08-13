@@ -1,0 +1,98 @@
+[
+    {
+        "model": "business.businesscategories", 
+        "pk": 1, 
+        "fields": {
+        "categoria": "Agencia de Viaje", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 2, 
+        "fields": {
+        "categoria": "Comercio Electronico", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 3, 
+        "fields": {
+        "categoria": "Entretenimiento", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 4, 
+        "fields": {
+        "categoria": "Hoteleria", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 5, 
+        "fields": {
+        "categoria": "Inmobiliaria", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 6, 
+        "fields": {
+        "categoria": "Restaurante", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 7, 
+        "fields": {
+        "categoria": "Tienda de Electronica", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 8, 
+        "fields": {
+        "categoria": "Tintoreria", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 9, 
+        "fields": {
+        "categoria": "Transporte", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 10, 
+        "fields": {
+        "categoria": "Telecomunicaciones", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 11, 
+        "fields": {
+        "categoria": "Servicios Funebres", 
+        "descripcion": ""
+        }
+    },
+    {
+        "model": "business.businesscategories", 
+        "pk": 12, 
+        "fields": {
+        "categoria": "Otros", 
+        "descripcion": ""
+        }
+    }
+]
