@@ -39,7 +39,8 @@ class BusinessViewset(viewsets.ModelViewSet):
         'create': ['_Public'],
         'actualizar': ['Business'],
         'detalle': ['Business'],
-        'categoria': ['Business', 'Admin', 'User']
+        'categoria': ['Business', 'Admin', 'User'],
+        'actualizar_logo': ['Business']
     }
 
     def get_serializer_class(self):
@@ -56,6 +57,22 @@ class BusinessViewset(viewsets.ModelViewSet):
         serializer.save()
 
         return Response(serializer.data)
+
+    @action(methods=['put'], detail=False,
+            url_path='actualizar-logo', url_name='actualizar-logo')
+    def actualizar_logo(self, request, *args, **kwargs):
+        user = request.user
+        instance = get_object_or_404(self.queryset, fk_user=user.pk)
+        ruta_img = os.path.join(settings.MEDIA_ROOT, str(instance.logo))
+
+        if os.path.exists(ruta_img) and str(instance.logo) != 'default/business.jpg':
+            os.remove(ruta_img)
+        
+        serializer = BusinessImgSerializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'detail':serializer.data},
+                status=status.HTTP_200_OK)
 
     @action(methods=['put'], detail=False,
             url_path='actualizar', url_name='actualizar')

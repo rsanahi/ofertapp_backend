@@ -174,6 +174,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FormParser',
     ),
 }
 
@@ -192,7 +193,7 @@ FIXTURE = os.path.join(BASE_DIR, 'fixtures')
 django_heroku.settings(locals())
 
 # this disables Cross domain requests
-CORS_ORIGIN_ALLOW_ALL = False 
+CORS_ORIGIN_ALLOW_ALL = True 
 
 # this is the list of allowed origins for cross domain ajax
 CORS_ORIGIN_WHITELIST = ( 

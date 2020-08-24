@@ -17,9 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from .routers import router
 from django.urls import path, include, re_path
+from django.views.static import serve
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include((router.urls, 'api_ofertapp'), namespace='ofertapp_api')),
     path('api/auth/', include('djoser.urls.authtoken')),
+      re_path(r'^sources/(?P<path>.*)$', serve, {
+        'document_root': settings.MEDIA_ROOT,
+    }),
 ]

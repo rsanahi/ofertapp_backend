@@ -1,17 +1,20 @@
-TuOfertApp/__pycache__/
+TuOfertApp/__pycache__/*
 TuOfertApp/__pycache__/routers.cpython-37.pyc
-users/__pycache__/
-users/migrations/
-utils/migrations/
-utils/__pycache__/
-business/__pycache__/
-business/migrations/
+users/__pycache__/*
+users/migrations/*
+utils/migrations/*
+utils/__pycache__/*
+business/__pycache__/*
+business/migrations/*
 .vscode/settings.json
 TuOfertApp/__pycache__/routers.cpython-37.pyc
 *.pyc
 business/__pycache__/models.cpython-37.pyc
 users/__pycache__/serializers.cpython-37.pyc
-pruebas Api/
+pruebas Api/*
 *.pyc
 users/__pycache__/views.cpython-37.pyc
 business/__pycache__/models.cpython-37.pyc
+sources/*
+*.pyc
+*.pyc

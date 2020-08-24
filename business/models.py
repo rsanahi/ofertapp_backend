@@ -40,9 +40,14 @@ class UserBusiness(SoftDelete):
     @date 21-06-20
     @version 1.0.0
     """
+    def get_upload_to(self, filename):
+        return "business/%s/%s" % (self.fk_user.username, filename)
+
     fk_user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     nombre_local = models.CharField(max_length=255, default="")
+
+    logo = models.ImageField(upload_to=get_upload_to, null=True, blank=True, default='default/business.png')
 
     direccion = models.CharField(max_length=500)
 
@@ -94,6 +99,8 @@ class Ofertas(SoftDelete):
     precio_neto = models.FloatField(null=False, default=0.00)
 
     porcentaje = models.IntegerField(null=False, default=0)
+    
+    cantidad = models.IntegerField(null=False, default=1)
 
     deshabilitado = models.BooleanField(default=False)
 

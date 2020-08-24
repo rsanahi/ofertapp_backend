@@ -67,16 +67,15 @@ class BusinessUpdateSerializer(serializers.ModelSerializer):
     """!
     
     """
-    print("validata",validated_data)
     if validated_data.get("fk_user"):
         user_seri = validated_data.pop("fk_user")
-        print(user_seri)
     else:
         user_seri = {}
     instance.telefono = validated_data.get('telefono', instance.telefono)
     instance.nombre_local = validated_data.get('nombre_local', instance.nombre_local)
     instance.direccion = validated_data.get('direccion', instance.direccion)
     instance.categoria = validated_data.get('categoria', instance.categoria)
+    instance.logo = validated_data.get('logo', instance.logo)
 
     email = user_seri.get('email') if user_seri.get('email', None) is not None else instance.fk_user.email        
     first_name = user_seri.get('first_name') if user_seri.get('first_name', None) is not None else instance.fk_user.first_name
@@ -91,3 +90,18 @@ class BusinessUpdateSerializer(serializers.ModelSerializer):
         instance.save()
 
     return instance
+
+class BusinessImgSerializer(serializers.ModelSerializer):
+    class Meta:
+      """
+      """
+      model = UserBusiness
+      fields = ('logo',)
+    
+    def update(self, instance, validated_data):
+      """!
+    
+      """
+      instance.logo = validated_data.get('logo', instance.logo)
+      instance.save()
+      return instance
