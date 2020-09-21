@@ -3,6 +3,8 @@ from utils.models import SoftDelete
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+from .constants import *
+
 # Create your models here.
 
 class BusinessCategories(SoftDelete):
@@ -90,17 +92,24 @@ class Ofertas(SoftDelete):
     @date 21-06-20
     @version 1.0.0
     """
-    fk_user = models.OneToOneField(UserBusiness, on_delete=models.CASCADE)
+    def get_upload_to(self, filename):
+        return "oferts/%s/%s" % (self.fk_user.pk, filename)
+
+    fk_user = models.ForeignKey(UserBusiness, on_delete=models.CASCADE,related_name="business_oferta")
 
     titulo = models.CharField(max_length=255, default="", null=False)
 
     descripcion = models.TextField(max_length=255, default="")
 
-    precio_neto = models.FloatField(null=False, default=0.00)
+    precio = models.FloatField(null=False, default=0.00)
 
     porcentaje = models.IntegerField(null=False, default=0)
     
     cantidad = models.IntegerField(null=False, default=1)
+
+    moneda = models.PositiveIntegerField(choices=MONEDA_CHOICES, default=4)
+
+    img = models.ImageField(upload_to=get_upload_to, null=True, blank=True, default='default/oferta.png')
 
     deshabilitado = models.BooleanField(default=False)
 
@@ -129,4 +138,4 @@ class Ofertas(SoftDelete):
         if not self.id:
             self.created_at = timezone.now()
         self.updated_at = timezone.now()
-        return super(User, self).save(*args, **kwargs)
+        return super(Ofertas, self).save(*args, **kwargs)

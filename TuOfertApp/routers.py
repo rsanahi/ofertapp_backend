@@ -10,3 +10,4 @@ router.register(r'cliente', UserClientViewset)
 
 # Business App
 router.register(r'business', BusinessViewset)
+router.register(r'oferts', OfertsViewset)

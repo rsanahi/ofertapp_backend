@@ -18,17 +18,19 @@ from .serializers import *
 # Create your views here.
 @permission_classes([IsAuthenticated])
 def deleteSoft(object_instance):
-    """
-    Funcion para el borrado logico
-    """
-    object_instance.soft_delete = True
-    object_instance.save()
-    return object_instance
+	"""
+	Funcion para el borrado logico
+	"""
+	object_instance.soft_delete = True
+	object_instance.save()
+	return object_instance
 
 class BusinessViewset(viewsets.ModelViewSet):
     """
     Clase para gestionar la data de la empresa
-
+    @author Anahi Ruiz (rs.anahi at gmail.com)
+    @date 21-06-20
+    @version 1.0.0
 
     """
     queryset = UserBusiness.objects.all().filter(soft_delete=False)
@@ -117,3 +119,38 @@ class BusinessViewset(viewsets.ModelViewSet):
         serializer = BusinessCategoriesSerializer(categorias,many=True)
         return Response({'categorias':serializer.data},
                 status=status.HTTP_200_OK)
+
+class OfertsViewset(viewsets.ModelViewSet):
+
+    """
+        Clase para administrar las ofertas
+        @author Anahi Ruiz (rs.anahi at gmail.com)
+        @date 25-08-20
+        @version 1.0.0
+    """
+
+    queryset = Ofertas.objects.all().filter(soft_delete=False)
+    serializer_class = OfertasSerializer
+    filter_fields = ('titulo', 'fk_user__categoria', 'fk_user__username', 'deshabilitado')
+    permission_groups = {
+        'list': ['Business'],
+        'create': ['Business'],
+        'actualizar': ['Business'],
+    }
+
+    def create(self, request):
+        user = request.user
+        oferta = request.data.copy()
+        try:
+            oferta['fk_user'] = UserBusiness.objects.get(fk_user=user.pk).id
+            oferta['img'] = oferta['logo']
+        except Exception as e:
+            print(e)
+            raise exceptions.PermissionDenied('Este usuario no existe.')
+
+        serializer = self.serializer_class(data=oferta)
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return Response(serializer.data)
