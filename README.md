@@ -4,6 +4,7 @@
 
 ```
 python manage.py makemigrations users
+python manage.py makemigrations business
 ```
 
 Proceso inicia para la creacion de grupos de ususario y datos default

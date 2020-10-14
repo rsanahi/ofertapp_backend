@@ -131,21 +131,42 @@ class OfertsViewset(viewsets.ModelViewSet):
 
     queryset = Ofertas.objects.all().filter(soft_delete=False)
     serializer_class = OfertasSerializer
-    filter_fields = ('titulo', 'fk_user__categoria', 'fk_user__username', 'deshabilitado')
+    filter_fields = ('titulo', 'fk_business__categoria', 'deshabilitado')
+    search_fields = ('titulo', )
+    ordering_fields = ('id', )
+
     permission_groups = {
         'list': ['Business'],
         'create': ['Business'],
-        'actualizar': ['Business'],
+        'update': ['Business'],
     }
+
+    def list(self, request):
+        get_data = self.request.query_params
+        queryset = super(OfertsViewset, self).filter_queryset(self.get_queryset())
+        
+        paginate = get_data.get('paginate', None)
+        if paginate != '0' or paginate is None:
+            page = self.paginate_queryset(queryset)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+        else:
+            serializer = self.get_serializer(queryset, many=True)
+            data = {'count':queryset.count(), 'results':serializer.data}
+        return Response(data)
 
     def create(self, request):
         user = request.user
         oferta = request.data.copy()
         try:
-            oferta['fk_user'] = UserBusiness.objects.get(fk_user=user.pk).id
-            oferta['img'] = oferta['logo']
+            oferta['fk_business'] = UserBusiness.objects.get(fk_user=user.pk).id
+
+            logo = oferta.get('logo', None)
+            if logo:
+                oferta['img'] = oferta.get('logo', None)
         except Exception as e:
-            print(e)
+            print("error", e)
             raise exceptions.PermissionDenied('Este usuario no existe.')
 
         serializer = self.serializer_class(data=oferta)
@@ -154,3 +175,24 @@ class OfertsViewset(viewsets.ModelViewSet):
         serializer.save()
 
         return Response(serializer.data)
+    
+    def update(self, request, pk=None, *args, **kwargs):
+        user = request.user
+        instance = self.get_object()
+        partial = kwargs.pop('partial', False)
+        data = request.data.copy()
+        print(user.pk, instance.fk_business.fk_user.pk)
+        if user.pk != instance.fk_business.fk_user.pk:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail':'Esta oferta no pertenece a este restaurate.'})
+        else:
+            try:
+                data['fk_business'] = instance.fk_business.pk
+                serializer = self.get_serializer(instance, data=data, partial=partial)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+                return Response(serializer.data)
+            except Exception as e:
+                print(e)
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail':'Error al actualizar la oferta'})
+        print(instance)
+        return Response(status=status.HTTP_200_OK, data={'detail':'updated'})

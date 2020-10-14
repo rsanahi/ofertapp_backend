@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'TuOfertApp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ofertapp',
         'USER': 'postgres',
         'PASSWORD': '123456',
@@ -176,6 +176,12 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
         'rest_framework.parsers.FormParser',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'utils.Custom_pagination.CustomPageNumberPagination',
+    'PAGE_SIZE': 10,
+    'UNICODE_JSON': True,
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',
+                                'rest_framework.filters.SearchFilter',
+                                'rest_framework.filters.OrderingFilter'),
 }
 
 DJOSER = {

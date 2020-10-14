@@ -122,3 +122,23 @@ class OfertasSerializer(serializers.ModelSerializer):
 		"""
 		model = Ofertas
 		exclude = ('created_at', 'updated_at')
+	
+	def update(self, instance, validated_data):
+		"""
+		Clase para actualizar una oferta
+
+		@param self instancia de la clase
+		@param instance objeto intanciado del modelo
+		@param validated_data data validada
+		@return la información instancia del objeto
+		"""
+		instance.titulo = validated_data.get('titulo', instance.titulo)
+		instance.descripcion = validated_data.get('descripcion', instance.descripcion)
+		instance.precio = validated_data.get('precio', instance.precio)
+		instance.porcentaje = validated_data.get('porcentaje', instance.porcentaje)
+		instance.cantidad = validated_data.get('cantidad', instance.cantidad)
+		instance.moneda = validated_data.get('moneda', instance.moneda)
+		instance.deshabilitado = validated_data.get('deshabilitado', instance.deshabilitado)
+
+		instance.save()
+		return instance

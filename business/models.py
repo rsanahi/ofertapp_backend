@@ -95,7 +95,7 @@ class Ofertas(SoftDelete):
     def get_upload_to(self, filename):
         return "oferts/%s/%s" % (self.fk_user.pk, filename)
 
-    fk_user = models.ForeignKey(UserBusiness, on_delete=models.CASCADE,related_name="business_oferta")
+    fk_business = models.ForeignKey(UserBusiness, on_delete=models.CASCADE, related_name="business_oferta")
 
     titulo = models.CharField(max_length=255, default="", null=False)
 
@@ -125,7 +125,7 @@ class Ofertas(SoftDelete):
         verbose_name = 'User Offer'
         verbose_name_plural = 'User Offers'
         db_table = 'business_offer'
-        unique_together = (('fk_user', 'titulo'),)
+        unique_together = (('fk_business', 'titulo'),)
 
     def __str__(self):
         """!
