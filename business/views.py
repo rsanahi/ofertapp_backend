@@ -139,6 +139,7 @@ class OfertsViewset(viewsets.ModelViewSet):
         'list': ['Business'],
         'create': ['Business'],
         'update': ['Business'],
+        'destroy': ['Business'],
     }
 
     def list(self, request):
@@ -178,21 +179,29 @@ class OfertsViewset(viewsets.ModelViewSet):
     
     def update(self, request, pk=None, *args, **kwargs):
         user = request.user
-        instance = self.get_object()
         partial = kwargs.pop('partial', False)
-        data = request.data.copy()
-        print(user.pk, instance.fk_business.fk_user.pk)
+        instance = self.get_object()
+        data = request.data
         if user.pk != instance.fk_business.fk_user.pk:
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail':'Esta oferta no pertenece a este restaurate.'})
         else:
             try:
                 data['fk_business'] = instance.fk_business.pk
-                serializer = self.get_serializer(instance, data=data, partial=partial)
+                serializer = self.get_serializer(instance, data=data)
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
                 return Response(serializer.data)
             except Exception as e:
                 print(e)
                 return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail':'Error al actualizar la oferta'})
-        print(instance)
+        
         return Response(status=status.HTTP_200_OK, data={'detail':'updated'})
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            deleteSoft(instance)
+            detail = {"detail": "Se eliminó con éxito el elemento: {0}".format(instance)}
+        except Exception as e:
+            return Response(status=status.HTTP_404_NOT_FOUND, data={'detail':'Error al eliminar oferta.'})
+        return Response(detail, status=status.HTTP_200_OK)
