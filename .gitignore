@@ -22,3 +22,4 @@ business/__pycache__/*
 *.pyc
 business/migrations/0001_initial.py
 business/migrations/__pycache__/0001_initial.cpython-37.pyc
+*.pyc
