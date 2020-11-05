@@ -15,7 +15,8 @@ pruebas Api/*
 *.pyc
 users/__pycache__/views.cpython-37.pyc
 business/__pycache__/models.cpython-37.pyc
-sources/*
+sources/business/*
+sources/oferts/*
 *.pyc
 *.pyc
 business/__pycache__/*
