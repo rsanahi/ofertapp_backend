@@ -181,7 +181,7 @@ class OfertsViewset(viewsets.ModelViewSet):
         user = request.user
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        data = request.data
+        data = request.data.copy()
         if user.pk != instance.fk_business.fk_user.pk:
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail':'Esta oferta no pertenece a este restaurate.'})
         else:
