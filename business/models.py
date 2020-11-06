@@ -93,7 +93,7 @@ class Ofertas(SoftDelete):
     @version 1.0.0
     """
     def get_upload_to(self, filename):
-        return "oferts/%s/%s" % (self.fk_user.pk, filename)
+        return "oferts/%s/%s" % (self.fk_business.fk_user.username, filename)
 
     fk_business = models.ForeignKey(UserBusiness, on_delete=models.CASCADE, related_name="business_oferta")
 

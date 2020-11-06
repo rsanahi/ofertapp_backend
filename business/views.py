@@ -67,7 +67,7 @@ class BusinessViewset(viewsets.ModelViewSet):
         instance = get_object_or_404(self.queryset, fk_user=user.pk)
         ruta_img = os.path.join(settings.MEDIA_ROOT, str(instance.logo))
 
-        if os.path.exists(ruta_img) and str(instance.logo) != 'default/business.jpg':
+        if os.path.exists(ruta_img) and str(instance.logo) != 'default/business.png':
             os.remove(ruta_img)
         
         serializer = BusinessImgSerializer(instance, data=request.data)
