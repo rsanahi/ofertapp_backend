@@ -139,5 +139,6 @@ class OfertasSerializer(serializers.ModelSerializer):
 		instance.cantidad = validated_data.get('cantidad', instance.cantidad)
 		instance.moneda = validated_data.get('moneda', instance.moneda)
 		instance.deshabilitado = validated_data.get('deshabilitado', instance.deshabilitado)
+		instance.img = validated_data.get('img', instance.img)
 		instance.save()
 		return instance

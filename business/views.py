@@ -146,7 +146,6 @@ class OfertsViewset(viewsets.ModelViewSet):
         get_data = self.request.query_params
         queryset = super(OfertsViewset, self).filter_queryset(self.get_queryset())
         user = request.user
-        print(user.pk)
         if is_in_group(request.user, "Business"):
             queryset = queryset.filter(fk_business__fk_user__pk = user.pk)
         paginate = get_data.get('paginate', None)
@@ -190,6 +189,9 @@ class OfertsViewset(viewsets.ModelViewSet):
         else:
             try:
                 data['fk_business'] = instance.fk_business.pk
+                logo = data.get('logo', None)
+                if logo:
+                    data['img'] = logo
                 serializer = self.get_serializer(instance, data=data)
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
