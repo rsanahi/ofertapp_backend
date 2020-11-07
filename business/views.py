@@ -5,6 +5,8 @@ from .models import *
 from rest_framework import (
     viewsets, exceptions, status
 )
+from django.db.models import Q, Sum, Count
+
 from rest_framework.response import Response
 from rest_framework.decorators import action, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -140,6 +142,7 @@ class OfertsViewset(viewsets.ModelViewSet):
         'create': ['Business'],
         'update': ['Business'],
         'destroy': ['Business'],
+        'oferts_categories': ['User'],
     }
 
     def list(self, request):
@@ -210,3 +213,14 @@ class OfertsViewset(viewsets.ModelViewSet):
         except Exception as e:
             return Response(status=status.HTTP_404_NOT_FOUND, data={'detail':'Error al eliminar oferta.'})
         return Response(detail, status=status.HTTP_200_OK)
+
+    @action(methods=['get'], detail=False,
+            url_path='oferts-categories', url_name='oferts-categories')
+    def oferts_categories(self, request, *args, **kwargs):
+        queryset = super(OfertsViewset, self).filter_queryset(self.get_queryset())
+        if is_in_group(request.user, "User"):
+            queryset = Ofertas.objects.order_by('fk_business__categoria').values(
+                                        'fk_business__categoria__categoria'
+                                    ).annotate(count=Count('fk_business__categoria__categoria'))
+            return Response(data={'result':queryset},status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
